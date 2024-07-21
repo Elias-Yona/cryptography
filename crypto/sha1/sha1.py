@@ -6,7 +6,20 @@ SHA_NULL = 1
 SHA_INPUT_TOO_LONG = 2
 SHA_STATE_ERROR = 3
 
+
 def SHA1Reset(context):
+    """
+    Initialize the SHA1Context in preparation for computing a new SHA1 message digest.
+
+    Parameters:
+        context (Sha1Context): The context to reset. This parameter acts both as input and output,
+                               as the function modifies the state of the context object.
+
+    Returns:
+        int: sha Error Code. The function returns an integer representing the status of the operation.
+             A value of 0 typically indicates success, while other values indicate errors.
+    """
+
     if context is None:
         return SHA_NULL
 
@@ -25,7 +38,23 @@ def SHA1Reset(context):
 
     return SHA_SUCCESS
 
+
 def SHA1Input(context, message_array, length):
+    """
+    Accept an array of octets as the next portion of the message.
+
+    Parameters:
+        context (Sha1Context): The SHA context to update. This parameter acts both as input and output,
+                               as the function modifies the state of the context object.
+        message_array (bytes): An array of characters representing the next portion of the message.
+                              This parameter acts as input, providing the data to be hashed.
+        length (int): The length of the message in message_array. This parameter specifies the size of the input data.
+
+    Returns:
+        int: sha Error Code. The function returns an integer representing the status of the operation.
+             A value of 0 typically indicates success, while other values indicate errors.
+    """
+
     if length == 0:
         return SHA_SUCCESS
 
@@ -59,7 +88,28 @@ def SHA1Input(context, message_array, length):
 
     return SHA_SUCCESS
 
+
 def SHA1ProcessMessageBlock(context):
+    """
+    Process the next 512 bits of the message stored in the message_block array.
+
+    Description:
+        This function processes the next 512 bits of the message, which is assumed to be stored in an internal
+        or globally accessible message_block array. The processing involves updating the hash computation based
+        on the contents of this block.
+
+    Parameters:
+        None. This function does not accept external parameters; it operates on the message_block array directly.
+
+    Returns:
+        Nothing. This function does not return a value. Its primary role is to update the internal state of the hash computation.
+
+    Comments:
+        Many of the variable names in this code, especially the single character names, were used because those were the
+        names used in the publication. This adherence to the original naming conventions helps maintain consistency with
+        the theoretical underpinnings of the SHA-1 algorithm as described in relevant cryptographic literature.
+    """
+
     K = [0x5A827999, 0x6ED9EBA1, 0x8F1BBCDC, 0xCA62C1D6]
     W = [0] * 80
 
@@ -119,7 +169,24 @@ def SHA1ProcessMessageBlock(context):
 
     context.message_block_index = 0
 
+
 def SHA1Result(context, message_digest):
+    """
+    Return the 160-bit message digest into the message_digest array provided by the caller.
+
+    Note: The first octet of the hash is stored in the 0th element,
+          the last octet of the hash in the 19th element.
+
+    Parameters:
+        context (Sha1Context): The context to use to calculate the SHA-1 hash. This parameter acts both as input and output,
+                               as the function modifies the state of the context object.
+        message_digest (list): Where the digest is returned. This parameter acts as output, where the computed hash will be stored.
+
+    Returns:
+        int: sha Error Code. The function returns an integer representing the status of the operation.
+             A value of 0 typically indicates success, while other values indicate errors.
+    """
+
     if context is None or message_digest is None:
         return SHA_NULL
 
@@ -140,7 +207,28 @@ def SHA1Result(context, message_digest):
 
     return SHA_SUCCESS
 
+
 def SHA1PadMessage(context):
+    """
+    Pad the message according to SHA-1 specifications and process the padded message block.
+
+    Description:
+        According to the SHA-1 standard, the message must be padded to an even 512 bits. The first padding bit must be a '1'.
+        The last 64 bits represent the length of the original message. All bits in between should be 0. This function pads the
+        message according to those rules by filling the message_block array accordingly. It also calls the provided
+        ProcessMessageBlock function to process the padded message block. Upon return, it can be assumed that the message
+        digest has been computed.
+
+    Parameters:
+        context (Sha1Context): The context to pad. This parameter acts both as input and output, as the function modifies
+                               the state of the context object.
+        ProcessMessageBlock (function): The appropriate SHA*ProcessMessageBlock function to call for processing the padded
+                                        message block. This parameter acts as input, specifying the processing function to use.
+
+    Returns:
+        Nothing. This function does not return a value. Its primary role is to modify the context and trigger the processing
+               of the padded message block.
+    """
     if context.message_block_index > 55:
         context.message_block[context.message_block_index] = 0x80
         context.message_block_index += 1

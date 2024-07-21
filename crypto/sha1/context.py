@@ -1,6 +1,10 @@
 SHA1_HASH_SIZE = 20
 
 class SHA1Context:
+    """
+    This structure will hold context information for the SHA-1 hashing operation.
+    """
+    
     def __init__(self):
         # Intermediate Hash to store the message digest
         self.intermediate_hash = [0] * (SHA1_HASH_SIZE // 4)
