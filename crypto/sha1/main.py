@@ -1,6 +1,6 @@
 import argparse
 from .context import SHA1Context
-from crypto.sha1 import SHA1Reset, SHA1Input, SHA1Result
+from .sha1 import SHA1Reset, SHA1Input, SHA1Result
 
 def compute_sha1(message):
     sha = SHA1Context()
@@ -22,10 +22,11 @@ def compute_sha1(message):
     if err:
         print(f"SHA1Result Error {err}, could not compute message digest.")
     else:
-        print("\t", end="")
+        # print("\t", end="")
+        hash_value = ''
         for i in message_digest:
-            print(f"{i:02X} ", end="")
-        print()
+            hash_value += f'{i:02X}'
+        print(f"Message Digest: {hash_value}")
 
 def main():
     parser = argparse.ArgumentParser(description='Compute SHA-1 hash for a given message.')
