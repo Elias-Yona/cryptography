@@ -1,6 +1,6 @@
 import argparse
 from .context import SHA1Context
-from .sha1 import SHA1Reset, SHA1Input, SHA1Result
+from crypto.sha1 import SHA1Reset, SHA1Input, SHA1Result
 
 def compute_sha1(message):
     sha = SHA1Context()

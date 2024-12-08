@@ -2,7 +2,7 @@
 
 ## About
 
-This toy project serves as a practical tool for understanding the inner workings of various cryptography algorithms through hands-on implementation. 
+This toy project serves as a practical tool for understanding the inner workings of various cryptography algorithms through hands-on implementation.
 
 ## Getting Started
 
@@ -59,6 +59,32 @@ sha1 "your message here"
 
 Replace `"your message here"` with the actual text you wish to hash.
 
+### HMAC Generation
+
+To generate an HMAC for a message using a specified hash function, use the following command:
+
+```shell
+python main.py <key> <message> <digest>
+```
+
+Replace the placeholders as follows:
+
+- `<key>`: The secret key used for the HMAC computation.
+- `<message>`: The input message for which the HMAC will be computed.
+- `<digest>`: The name of the hash function (e.g., `sha256`, `sha1`, `md5`).
+
+#### Example:
+
+```shell
+python main.py YourSecretKey1234567890 "This is a test message" sha256
+```
+
+Expected output:
+
+```plaintext
+HMAC (hex): 1ca0369c1bc124d3889dfec78924c2fa329c34c708559057eee59040f878c1f6
+```
+
 ## Running Tests
 
 The project includes unit tests to verify the correctness of the implemented algorithms. To run these tests, use the following command:
@@ -68,3 +94,4 @@ python -m unittest discover -s tests
 ```
 
 This command will automatically discover and run all test cases located within the `tests` directory.
+
